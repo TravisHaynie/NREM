@@ -9,17 +9,17 @@ const PORT = process.env.PORT || 3001;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// if we're in production, serve client/build as static assets
+// Serve static assets from the client/dist folder in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+  app.use(express.static(path.join(__dirname, 'client/dist')));
 
-  // Send index.html for any requests that don't match an API route
+  // If no API routes are hit, send the React app
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    res.sendFile(path.join(__dirname, 'client/dist/index.html'));
   });
 }
 
-
+// Use API routes
 app.use(routes);
 
 db.once('open', () => {
